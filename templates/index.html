@@ -1,0 +1,106 @@
+{% extends 'common.html' %}
+{% block main %}
+<script src="/static/js/gt.js"></script>
+</head>
+<body>
+<div class="container" style="width:700px">
+  <br>
+  <ul class="nav justify-content-center">
+    <img src="/static/img/logo.png" width="6%" height="6%">&nbsp;&nbsp;&nbsp;
+  <li class="nav-item">
+    <a class="nav-link" href="/">Home</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/about_me">About me</a>
+  </li>
+  </ul>
+  <br>
+    <div class="card">
+      <div class="card-header">
+        <a>[~]最后更新于: {{ updata_time }}</a><br>
+        <a>[~]当前全部代理数：{{ all_count }} , 当前有效代理数：{{ valid_count }}</a>
+      </div>
+      <div class="card-body">
+        <form action = "/" method = "post">
+          <div class="input-group mb-3" style="height:44px">
+            <div class="input-group-prepend">
+              <span class="input-group-text">提取数量(不可超过100)&nbsp;</span>
+            </div>&nbsp;&nbsp;&nbsp;
+            <input type="text" class="form-control" placeholder="100" name="count" style="height:44px;">
+			&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">&nbsp;数据源状态</button>
+          </div>
+
+          <div class="input-group mb-3" style="height:44px">
+            <div class="input-group-prepend">
+            <span class="input-group-text">提取前请先滑动验证 →&nbsp;</span>
+            </div>&nbsp;&nbsp;&nbsp;
+            <div id="embed-captcha"></div>&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-success" id="embed-submit" type="submit">&nbsp;&nbsp;开始提取&nbsp;&nbsp;</button>&nbsp &nbsp
+          </div>
+        </form>
+
+        <textarea class="form-control" rows="15" id="proxy">{{ proxy_list }}</textarea>
+      </div>
+
+    </div>
+
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h6 class="modal-title">当前所有数据源状态</h6>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <ul class="list-group">
+                {% for spider_status in spider_status_list %}
+                    <li class="list-group-item">{{ spider_status.name }}
+                      {% if spider_status.status == 'Yes' %}
+                        <span class="badge badge-success">{{ spider_status.status }}</span>
+                      {% elif spider_status.status == 'No' %}
+                        <span class="badge badge-danger">{{ spider_status.status }}</span>
+                      {% else %}
+                        <span class="badge badge-secondary">{{ spider_status.status }}</span>
+                      {% endif %}
+                    </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+    <script>
+        var handlerEmbed = function (captchaObj) {
+            $("#embed-submit").click(function (e) {
+                var validate = captchaObj.getValidate();
+            });
+            captchaObj.appendTo("#embed-captcha");
+        };
+        $.ajax({
+            url: "/captcha?t=" + (new Date()).getTime(),
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    product: "embed",
+                    offline: !data.success,
+                    new_captcha: data.new_captcha
+                }, handlerEmbed);
+            }
+        });
+    </script>
+    <br><br>
+</body>
+{% endblock %}
