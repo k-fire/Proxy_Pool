@@ -14,8 +14,8 @@ import random
 from geetest import GeetestLib
 import json
 
-geetest_id = "4a58e5052ce112b467d960"
-geetest_key = "76ebebb658b2b8096659d"
+geetest_id = "4a58e5052ce112b467d97d"
+geetest_key = "76ebebb658b2b8e4e8a73"
 
 ###定时任务层
 class Config(object):
