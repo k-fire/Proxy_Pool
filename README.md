@@ -1,6 +1,8 @@
 # Proxy_Pool
  自建代理池（web）
 
+demo ： http://proxy.s0s.cc/
+
 1.导入data.sql结构
 
 2.初次运行 index.py reload
