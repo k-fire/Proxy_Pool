@@ -2,6 +2,7 @@
  自建代理池（web）
 
 demo ： http://proxy.s0s.cc/
+详情 ： https://s0s.cc/810.html
 
 1.导入data.sql结构
 
